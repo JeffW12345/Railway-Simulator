@@ -10,19 +10,20 @@ public abstract class RailwayPlace {
     protected int capacity;
     protected String name;
     protected double length;
-
     private final ArrayList<Train> trainsHosted = new ArrayList<>();
 
     public ArrayList<Train> getTrainsHosted() {
         return trainsHosted;
     }
 
+    public RailwayPlace(double length) {
+        this.length = length;
+    }
+
     public RailwayPlace(String name, double length) {
         this.name = name;
         this.length = length;
     }
-
-
     public abstract double traversalDurationForTrainOfSpeed(double speed);
 
     public void addTrain(Train train) {

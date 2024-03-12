@@ -14,14 +14,11 @@ public class TrainFactory {
         return new ExpressTrain(++lastNumberAssigned);
     }
 
-    public void createTrainAndPutOnTrack(TrainType type) {
+    public void createTrainAndActivateThread(TrainType type) {
         Train train = train(type);
-        if(RailwayNetwork.getNextFreeRailwayPlace().isPresent()){
-            RailwayNetwork.getNextFreeRailwayPlace().get().addTrain(train);
-            train.setTimeArrivedAtCurrentPlace();
-        }
-    }
+        train.getThread().start();
 
+    }
     @SuppressWarnings("InfiniteLoopStatement")
     public void addTrains() {
         long addNextTrainOnOrAfter = System.currentTimeMillis();
@@ -30,7 +27,7 @@ public class TrainFactory {
                 continue;
             }
             TrainType trainType = new Random().nextInt(2) == 0 ? TrainType.EXPRESS : TrainType.LOCAL;
-            createTrainAndPutOnTrack(trainType);
+            createTrainAndActivateThread(trainType);
             addNextTrainOnOrAfter += (new Random().nextInt(61) * 1000) + addNextTrainOnOrAfter;
         }
     }

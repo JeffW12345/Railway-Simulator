@@ -5,16 +5,18 @@ import railway_similator.train.Train;
 
 import java.util.LinkedList;
 import java.util.Optional;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class RailwayNetwork {
     private static final LinkedList<RailwayPlace> railwayPlaces = new LinkedList<>();
+    private static final Lock lock = new ReentrantLock();
+    private static final Condition railwayPlaceCanAcceptNewTrain = lock.newCondition();
 
-    public void addRailwayPlace(RailwayPlace railwayPlace) {
+
+    public static void addRailwayPlace(RailwayPlace railwayPlace) {
         railwayPlaces.add(railwayPlace);
-    }
-
-    public void removeRailwayPlace(RailwayPlace railwayPlace) {
-        railwayPlaces.remove(railwayPlace);
     }
 
     public static Optional<RailwayPlace> getNextFreeRailwayPlace() {
@@ -58,5 +60,38 @@ public class RailwayNetwork {
             }
         }
         return Optional.empty();
+    }
+
+    public static void moveTrainToNextPlace(RailwayPlace railwayPlace, Train train) throws InterruptedException {
+        lock.lock();
+        boolean notEndRailwayPlace = RailwayNetwork.getRightNeighbourOfRailwayPlace(railwayPlace).isPresent();
+        try {
+            if(notEndRailwayPlace) {
+                RailwayPlace nextRailwayPlace = RailwayNetwork.getRightNeighbourOfRailwayPlace(railwayPlace).get();
+                while (!nextRailwayPlace.canAcceptNewTrain()) {
+                    railwayPlaceCanAcceptNewTrain.await();
+                }
+                trainNewRailwayPlaceActions(train, nextRailwayPlace);
+                railwayPlaceCanAcceptNewTrain.signal();
+            } else {
+                railwayPlace.removeTrain(train);
+            }
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    private static void trainNewRailwayPlaceActions(Train train, RailwayPlace nextRailwayPlace) {
+        nextRailwayPlace.addTrain(train);
+        train.setTimeArrivedAtCurrentPlace();
+    }
+
+    @Override
+    public String toString(){
+        StringBuilder toReturn = new StringBuilder();
+        for(RailwayPlace railwayPlace : railwayPlaces){
+            toReturn.append(railwayPlace);
+        }
+        return toReturn.toString();
     }
 }
