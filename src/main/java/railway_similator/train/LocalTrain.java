@@ -4,5 +4,6 @@ public class LocalTrain extends Train {
 
     public LocalTrain(int trainNumber) {
         super(trainNumber);
+        speed = 10;
     }
 }

@@ -1,10 +1,10 @@
 package railway_similator.print;
 
-import railway_similator.place.RailwayPlace;
+import railway_similator.RailwayNetwork;
 
 public class StatusPrinter implements Print {
     @Override
-    public void printStatus(RailwayPlace railwayPlace) {
+    public void printStatus(RailwayNetwork railwayNetwork) {
         //TODO
     }
 }

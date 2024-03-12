@@ -6,18 +6,24 @@ import java.util.ArrayList;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class RailwayPlace {
+public abstract class RailwayPlace {
     protected int capacity;
     protected String name;
     protected double length;
 
     private final ArrayList<Train> trainsHosted = new ArrayList<>();
 
-    public RailwayPlace(int capacity, String name, double length) {
-        this.capacity = capacity;
+    public ArrayList<Train> getTrainsHosted() {
+        return trainsHosted;
+    }
+
+    public RailwayPlace(String name, double length) {
         this.name = name;
         this.length = length;
     }
+
+
+    public abstract double traversalDurationForTrainOfSpeed(double speed);
 
     public void addTrain(Train train) {
         Lock addTrainLock = new ReentrantLock();
@@ -42,24 +48,11 @@ public class RailwayPlace {
             }
         }
     }
-
-    public boolean fullyBooked(){
-        return trainsHosted.size() == capacity;
+    public double traversalTimeInSeconds(Train train){
+        return traversalDurationForTrainOfSpeed(train.getSpeed());
     }
-
-    public boolean amIHere(Train train) {
-        return trainsHosted.contains(train);
-    }
-
-    public double traversalTime(double speed){
-        return this instanceof Station ? 5 + (length / speed) : (length / speed);
-    }
-
     public boolean canAcceptNewTrain() {
-        return false;
-    }
-    public boolean hasTrain(Train train) {
-        return false;
+        return trainsHosted.size() < capacity;
     }
 
     @Override
@@ -69,8 +62,18 @@ public class RailwayPlace {
                 .replace("[", "")
                 .replace("]", "");
 
-        return "";
+        String nameFollowedByTrains = name + "--" + trainsHostedAsString;
+
+        int numberOfDashes = 24 - nameFollowedByTrains.length();
+        String dashes = getDashes(numberOfDashes / 2);
+        return "|" + dashes + nameFollowedByTrains + dashes + "|";
     }
 
-    //TODO - Override toString
+    private String getDashes(int numberOfDashes){
+        String dashes = "-";
+        for(int i = 0; i < numberOfDashes; i++){
+            dashes += dashes;
+        }
+        return dashes;
+    }
 }

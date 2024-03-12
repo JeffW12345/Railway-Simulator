@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import java.util.Optional;
 
 public class RailwayNetwork {
-    private final LinkedList<RailwayPlace> railwayPlaces = new LinkedList<>();
+    private static final LinkedList<RailwayPlace> railwayPlaces = new LinkedList<>();
 
     public void addRailwayPlace(RailwayPlace railwayPlace) {
         railwayPlaces.add(railwayPlace);
@@ -17,13 +17,21 @@ public class RailwayNetwork {
         railwayPlaces.remove(railwayPlace);
     }
 
-    public Optional<RailwayPlace> getNextFreeRailwayPlace() {
+    public static Optional<RailwayPlace> getNextFreeRailwayPlace() {
         for (RailwayPlace railwayPlace : railwayPlaces) {
             if (railwayPlace.canAcceptNewTrain()) {
                 return Optional.of(railwayPlace);
             }
         }
         return Optional.empty();
+    }
+
+    public static LinkedList<RailwayPlace> getRailwayPlaces(){
+        return railwayPlaces;
+    }
+
+    public static Optional<RailwayPlace> getFirstSegment(){
+        return railwayPlaces.isEmpty() ? Optional.empty() : Optional.of(railwayPlaces.getFirst());
     }
 
     public Optional<RailwayPlace> getNextFreeRailwayPlaceAfter(RailwayPlace currentRailwayPlace) {
@@ -39,44 +47,16 @@ public class RailwayNetwork {
         return Optional.empty();
     }
 
-    public Optional<RailwayPlace> getRightNeighbourOfRailwayPlace(RailwayPlace railwayPlaceNeighbourWanted) {
-        boolean rightNeighbourFound = false;
+    public static Optional<RailwayPlace> getRightNeighbourOfRailwayPlace(RailwayPlace neighbourWanted) {
+        boolean elementSeekingNeighbourFound = false;
         for (RailwayPlace railwayPlace : railwayPlaces) {
-            if (rightNeighbourFound) {
+            if (elementSeekingNeighbourFound) {
                 return Optional.of(railwayPlace);
             }
-            if (railwayPlace == railwayPlaceNeighbourWanted) {
-                rightNeighbourFound = true;
+            if (railwayPlace == neighbourWanted) {
+                elementSeekingNeighbourFound = true;
             }
         }
         return Optional.empty();
-    }
-
-    public void moveTrainToNextDestination(Train train) {
-        if (canNextDestinationAcceptATrain(train)) {
-            RailwayPlace currentRailwayPlace = getRailwayPlaceForTrain(train);
-            currentRailwayPlace.removeTrain(train);
-            RailwayPlace newRailwayPlace = getRightNeighbourOfRailwayPlace(currentRailwayPlace).isPresent()
-                    ? getRightNeighbourOfRailwayPlace(currentRailwayPlace).get()
-                    : null;
-            boolean isTrainAtEndOfTrack = newRailwayPlace == null;
-            if(!isTrainAtEndOfTrack){
-                newRailwayPlace.addTrain(train);
-            }
-        }
-    }
-
-    public double timeInSecondsRequiredToTravel(RailwayPlace start, RailwayPlace end, Train train){
-        return 0;
-    }
-
-    private boolean canNextDestinationAcceptATrain (Train train){
-        return false;
-        }
-
-
-    private RailwayPlace getRailwayPlaceForTrain(Train train) {
-        return railwayPlaces.stream().filter(railwayplace -> railwayplace.hasTrain(train)).toList().get(0);
-
     }
 }
