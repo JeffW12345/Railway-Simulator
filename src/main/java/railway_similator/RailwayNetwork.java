@@ -66,6 +66,10 @@ public class RailwayNetwork {
         }
     }
 
+    public double timeInSecondsRequiredToTravel(RailwayPlace start, RailwayPlace end, Train train){
+        return 0;
+    }
+
     private boolean canNextDestinationAcceptATrain (Train train){
         return false;
         }

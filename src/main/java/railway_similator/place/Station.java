@@ -5,5 +5,4 @@ public class Station extends RailwayPlace {
         super(capacity, name, length);
     }
 
-
 }

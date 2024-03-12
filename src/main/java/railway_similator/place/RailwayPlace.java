@@ -61,4 +61,16 @@ public class RailwayPlace {
     public boolean hasTrain(Train train) {
         return false;
     }
+
+    @Override
+    public String toString(){
+        String trainsHostedAsString = trainsHosted
+                .toString()
+                .replace("[", "")
+                .replace("]", "");
+
+        return "";
+    }
+
+    //TODO - Override toString
 }

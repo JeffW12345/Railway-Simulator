@@ -8,6 +8,6 @@ public class Main {
     }
 
     public static void run(){
-
+        //lengthInKilometers = ThreadLocalRandom.current().nextInt(1, 15);
     }
 }
