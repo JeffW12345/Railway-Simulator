@@ -58,7 +58,7 @@ public class RailwayNetwork {
                 while (!nextRailwayPlace.canAcceptNewTrain()) {
                     railwayPlaceCanAcceptNewTrain.await();
                 }
-                trainNewRailwayPlaceActions(train, nextRailwayPlace);
+                trainNewRailwayPlaceActions(train, nextRailwayPlace, railwayPlace);
                 railwayPlaceCanAcceptNewTrain.signal();
             } else {
                 railwayPlace.removeTrain(train);
@@ -68,8 +68,13 @@ public class RailwayNetwork {
         }
     }
 
-    private static void trainNewRailwayPlaceActions(Train train, RailwayPlace nextRailwayPlace) {
+    private static void trainNewRailwayPlaceActions(
+            Train train,
+            RailwayPlace nextRailwayPlace,
+            RailwayPlace currentRailwayPlace
+    ) {
         nextRailwayPlace.addTrain(train);
+        currentRailwayPlace.removeTrain(train);
         train.setTimeArrivedAtCurrentPlace();
         train.setNewCurrentRailwayPlace(nextRailwayPlace);
     }

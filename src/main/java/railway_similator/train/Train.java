@@ -21,7 +21,6 @@ public class Train implements Runnable {
     public void setTimeArrivedAtCurrentPlace() {
         this.timeArrivedAtCurrentPlace = System.currentTimeMillis();
     }
-
     public Thread getThread(){
         return new Thread(this);
     }

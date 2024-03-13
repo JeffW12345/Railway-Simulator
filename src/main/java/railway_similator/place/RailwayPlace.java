@@ -4,6 +4,7 @@ import railway_similator.RailwayNetwork;
 import railway_similator.train.Train;
 
 import java.util.ArrayList;
+import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -14,6 +15,8 @@ public abstract class RailwayPlace {
     protected RailwayNetwork railwayNetwork;
 
     private final Lock lock = new ReentrantLock();
+
+    private final Condition atCapacity = lock.newCondition();
 
     private final ArrayList<Train> trainsHosted = new ArrayList<>();
 
@@ -30,14 +33,22 @@ public abstract class RailwayPlace {
     public abstract double traversalDurationForTrainOfSpeed(double speed);
 
     public void addTrain(Train train) {
-        // final Condition cannotMoveTrain  = addTrainLock.newCondition();
         lock.lock();
+        while(trainsHosted.size() == capacity){
+            try{
+                atCapacity.await();
+            } catch (InterruptedException e) {
+                //TODO - Add logging
+                System.out.println(e.getMessage());
+            }
+        }
         try {
             trainsHosted.add(train);
             }
             finally {
+            atCapacity.signal();
             lock.unlock();
-            }
+        }
     }
 
     public void removeTrain(Train train){
