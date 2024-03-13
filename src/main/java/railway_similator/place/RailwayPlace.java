@@ -15,7 +15,6 @@ public abstract class RailwayPlace {
     protected RailwayNetwork railwayNetwork;
     private final Lock lock = new ReentrantLock();
     private final Condition atCapacity = lock.newCondition();
-
     private final ArrayList<Train> trainsHosted = new ArrayList<>();
 
     public RailwayPlace(double length, RailwayNetwork railwayNetwork) {
@@ -27,6 +26,10 @@ public abstract class RailwayPlace {
         this.name = name;
         this.length = length;
         this.railwayNetwork = railwayNetwork;
+    }
+
+    public int numberOfTrainsHosted(){
+        return trainsHosted.size();
     }
     public abstract double traversalDurationForTrainOfSpeed(double speed);
 
@@ -58,6 +61,10 @@ public abstract class RailwayPlace {
         }
     }
 
+    public void setCapacity(int capacity){
+        this.capacity = capacity;
+    }
+
     public boolean isLastPlaceOnNetwork(){
         return railwayNetwork.checkIfPlaceAtEndOfNetwork(this);
     }
@@ -81,7 +88,6 @@ public abstract class RailwayPlace {
         String dashes = getDashes(numberOfDashes / 2);
         return "|" + dashes + nameFollowedByTrains + dashes + "|";
     }
-
     private String getDashes(int numberOfDashes){
         return "-" + "-".repeat(numberOfDashes);
     }

@@ -34,3 +34,6 @@ given section. E.g. a train can only enter a segment / station when there is spa
 enforced with Conditions, await and signal or signalAll
 
 ![Alt Text](example%20screenshot.jpg)
+
+Your code should include a main (in a file Runme.java) that creates some sections (including at least 2
+each of stations and track segments), links them together and starts all of the necessary threads

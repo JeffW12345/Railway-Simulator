@@ -22,7 +22,7 @@ public class TrainFactory {
     public static void addTrainsAndActivate(RailwayNetwork railwayNetwork) {
         while(true){
             try {
-                sleep(new Random().nextInt(61) * 1000);
+                sleep(new Random().nextInt(21) * 1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
