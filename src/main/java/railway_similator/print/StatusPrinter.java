@@ -21,6 +21,4 @@ public class StatusPrinter implements Print {
             }
         }
     }
-
-
 }
