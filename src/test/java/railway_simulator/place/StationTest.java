@@ -1,4 +1,4 @@
-package place;
+package railway_simulator.place;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
