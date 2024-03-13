@@ -11,12 +11,10 @@ public class Train implements Runnable {
     protected final int trainNumber;
     protected long timeArrivedAtCurrentPlace;
     protected RailwayPlace currentRailwayPlace;
+    private boolean trainAddedToInitialRailwayPlace;
 
     public Train(int trainNumber) {
         this.trainNumber = trainNumber;
-        this.currentRailwayPlace = RailwayNetwork.getFirstSegment().isPresent()
-                ? RailwayNetwork.getFirstSegment().get()
-                : null;
     }
     public double getSpeed(){
         return speed;
@@ -43,15 +41,9 @@ public class Train implements Runnable {
     @SuppressWarnings("InfiniteLoopStatement")
     @Override
     public void run() {
-        boolean trainAddedToInitialRailwayPlace = false;
-        if (RailwayNetwork.getNextFreeRailwayPlace().isPresent()) {
-            RailwayNetwork.getNextFreeRailwayPlace().get().addTrain(this);
-            this.setTimeArrivedAtCurrentPlace();
-            trainAddedToInitialRailwayPlace = true;
-        }
-        long addNextTrainOnOrAfter = System.currentTimeMillis();
+        addTrainToInitialRailwayPlace();
         while (trainAddedToInitialRailwayPlace) {
-            if(atEndOfCurrentPlace()){
+            if(atEndOfCurrentPlace() && !currentRailwayPlace.isLastPlaceOnNetwork()){
                 try {
                     RailwayNetwork.moveTrainToNextPlace(currentRailwayPlace, this);
                 } catch (InterruptedException e) {
@@ -59,6 +51,21 @@ public class Train implements Runnable {
                 }
             }
 
+            if(atEndOfCurrentPlace() && currentRailwayPlace.isLastPlaceOnNetwork()){
+                currentRailwayPlace.removeTrain(this);
+                break;
+            }
+        }
+    }
+
+    private void addTrainToInitialRailwayPlace() {
+        while (!trainAddedToInitialRailwayPlace){
+            if (RailwayNetwork.getNextFreeRailwayPlace().isPresent()) {
+                currentRailwayPlace = RailwayNetwork.getNextFreeRailwayPlace().get();
+                currentRailwayPlace.addTrain(this);
+                this.setTimeArrivedAtCurrentPlace();
+                trainAddedToInitialRailwayPlace = true;
+            }
         }
     }
 }

@@ -1,5 +1,6 @@
 package railway_similator.place;
 
+import railway_similator.RailwayNetwork;
 import railway_similator.train.Train;
 
 import java.util.ArrayList;
@@ -48,6 +49,10 @@ public abstract class RailwayPlace {
                 removeTrainLock.unlock();
             }
         }
+    }
+
+    public boolean isLastPlaceOnNetwork(){
+        return RailwayNetwork.checkIfPlaceAtEndOfNetwork(this);
     }
     public double traversalTimeInSeconds(Train train){
         return traversalDurationForTrainOfSpeed(train.getSpeed());

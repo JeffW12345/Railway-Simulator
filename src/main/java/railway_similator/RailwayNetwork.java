@@ -36,6 +36,10 @@ public class RailwayNetwork {
         return railwayPlaces.isEmpty() ? Optional.empty() : Optional.of(railwayPlaces.getFirst());
     }
 
+    public static boolean checkIfPlaceAtEndOfNetwork(RailwayPlace railwayPlace) {
+        return railwayPlaces.getLast() == railwayPlace;
+    }
+
     public Optional<RailwayPlace> getNextFreeRailwayPlaceAfter(RailwayPlace currentRailwayPlace) {
         boolean returnNext = false;
         for (RailwayPlace railwayPlace : railwayPlaces) {

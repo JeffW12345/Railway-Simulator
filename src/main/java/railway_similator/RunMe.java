@@ -2,6 +2,9 @@ package railway_similator;
 
 import railway_similator.place.Station;
 import railway_similator.place.TrackSegment;
+import railway_similator.train.TrainFactory;
+
+import static railway_similator.train.TrainFactory.addTrainsAndActivate;
 
 public class RunMe {
     public static void main(String[] args) {
@@ -13,9 +16,7 @@ public class RunMe {
         RailwayNetwork.addRailwayPlace(new TrackSegment( 1.9));
         RailwayNetwork.addRailwayPlace(new Station("Motherwell", 0.5));
 
-        Thread railNetworkRefreshThread = new Thread(ProgressUpdater::updateNetwork);
-        railNetworkRefreshThread.start();
-
+        new Thread(TrainFactory::addTrainsAndActivate);
 
     }
 }

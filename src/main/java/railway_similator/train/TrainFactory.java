@@ -1,26 +1,21 @@
 package railway_similator.train;
 
-import railway_similator.RailwayNetwork;
-
 import java.util.Random;
 
 public class TrainFactory {
-    private int lastNumberAssigned = 0;
-
-    public Train train(TrainType type) {
+    private static int lastNumberAssigned = 0;
+    private static Train train(TrainType type) {
         if(type == TrainType.LOCAL){
             return new LocalTrain(++lastNumberAssigned);
         }
         return new ExpressTrain(++lastNumberAssigned);
     }
-
-    public void createTrainAndActivateThread(TrainType type) {
+    private static void createTrainAndActivateThread(TrainType type) {
         Train train = train(type);
         train.getThread().start();
-
     }
     @SuppressWarnings("InfiniteLoopStatement")
-    public void addTrains() {
+    public static void addTrainsAndActivate() {
         long addNextTrainOnOrAfter = System.currentTimeMillis();
         while(true){
             if(System.currentTimeMillis() < addNextTrainOnOrAfter){
