@@ -1,12 +1,10 @@
 package railway_similator.train;
 
-import railway_similator.place.RailwayPlace;
-
-import java.util.ArrayList;
+import railway_similator.RailwayNetwork;
 
 public class ExpressTrain extends Train {
-    public ExpressTrain(int trainNumber) {
-        super(trainNumber);
+    public ExpressTrain(int trainNumber, RailwayNetwork railwayNetwork) {
+        super(trainNumber, railwayNetwork);
         speed = 500;
     }
 }

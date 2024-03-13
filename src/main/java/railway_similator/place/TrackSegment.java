@@ -1,10 +1,11 @@
 package railway_similator.place;
 
+import railway_similator.RailwayNetwork;
 import railway_similator.train.Train;
 
 public class TrackSegment extends RailwayPlace {
-    public TrackSegment(double lengthInMeters) {
-        super(lengthInMeters);
+    public TrackSegment(double lengthInMeters, RailwayNetwork railwayNetwork) {
+        super(lengthInMeters, railwayNetwork);
         name = "Track";
         capacity = 1;
     }

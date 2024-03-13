@@ -10,50 +10,33 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class RailwayNetwork {
-    private static final LinkedList<RailwayPlace> railwayPlaces = new LinkedList<>();
-    private static final Lock lock = new ReentrantLock();
-    private static final Condition railwayPlaceCanAcceptNewTrain = lock.newCondition();
+    private final LinkedList<RailwayPlace> railwayPlaces = new LinkedList<>();
+    private final Lock lock = new ReentrantLock();
+    private final Condition railwayPlaceCanAcceptNewTrain = lock.newCondition();
 
-
-    public static void addRailwayPlace(RailwayPlace railwayPlace) {
+    public void addRailwayPlace(RailwayPlace railwayPlace) {
         railwayPlaces.add(railwayPlace);
     }
 
-    public static Optional<RailwayPlace> getNextFreeRailwayPlace() {
-        for (RailwayPlace railwayPlace : railwayPlaces) {
-            if (railwayPlace.canAcceptNewTrain()) {
-                return Optional.of(railwayPlace);
+    public RailwayPlace getNextFreeRailwayPlace() {
+        lock.lock();
+        try{
+            for (RailwayPlace railwayPlace : railwayPlaces) {
+                if (railwayPlace.canAcceptNewTrain()) {
+                    return railwayPlace;
+                }
             }
+            return null;
         }
-        return Optional.empty();
+        finally{
+            lock.unlock();
+        }
     }
 
-    public static LinkedList<RailwayPlace> getRailwayPlaces(){
-        return railwayPlaces;
-    }
-
-    public static Optional<RailwayPlace> getFirstSegment(){
-        return railwayPlaces.isEmpty() ? Optional.empty() : Optional.of(railwayPlaces.getFirst());
-    }
-
-    public static boolean checkIfPlaceAtEndOfNetwork(RailwayPlace railwayPlace) {
+    public synchronized boolean checkIfPlaceAtEndOfNetwork(RailwayPlace railwayPlace) {
         return railwayPlaces.getLast() == railwayPlace;
     }
-
-    public Optional<RailwayPlace> getNextFreeRailwayPlaceAfter(RailwayPlace currentRailwayPlace) {
-        boolean returnNext = false;
-        for (RailwayPlace railwayPlace : railwayPlaces) {
-            if (returnNext) {
-                return Optional.of(railwayPlace);
-            }
-            if (railwayPlace == currentRailwayPlace) {
-                returnNext = true;
-            }
-        }
-        return Optional.empty();
-    }
-
-    public static Optional<RailwayPlace> getRightNeighbourOfRailwayPlace(RailwayPlace neighbourWanted) {
+    public synchronized Optional<RailwayPlace> getRightNeighbourOfRailwayPlace(RailwayPlace neighbourWanted) {
         boolean elementSeekingNeighbourFound = false;
         for (RailwayPlace railwayPlace : railwayPlaces) {
             if (elementSeekingNeighbourFound) {
@@ -66,12 +49,12 @@ public class RailwayNetwork {
         return Optional.empty();
     }
 
-    public static void moveTrainToNextPlace(RailwayPlace railwayPlace, Train train) throws InterruptedException {
+    public void moveTrainToNextPlace(RailwayPlace railwayPlace, Train train) throws InterruptedException {
         lock.lock();
-        boolean notEndRailwayPlace = RailwayNetwork.getRightNeighbourOfRailwayPlace(railwayPlace).isPresent();
+        boolean notEndRailwayPlace = getRightNeighbourOfRailwayPlace(railwayPlace).isPresent();
         try {
             if(notEndRailwayPlace) {
-                RailwayPlace nextRailwayPlace = RailwayNetwork.getRightNeighbourOfRailwayPlace(railwayPlace).get();
+                RailwayPlace nextRailwayPlace = getRightNeighbourOfRailwayPlace(railwayPlace).get();
                 while (!nextRailwayPlace.canAcceptNewTrain()) {
                     railwayPlaceCanAcceptNewTrain.await();
                 }
@@ -88,6 +71,7 @@ public class RailwayNetwork {
     private static void trainNewRailwayPlaceActions(Train train, RailwayPlace nextRailwayPlace) {
         nextRailwayPlace.addTrain(train);
         train.setTimeArrivedAtCurrentPlace();
+        train.setNewCurrentRailwayPlace(nextRailwayPlace);
     }
 
     @Override

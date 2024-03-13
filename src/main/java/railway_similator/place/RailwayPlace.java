@@ -11,19 +11,19 @@ public abstract class RailwayPlace {
     protected int capacity;
     protected String name;
     protected double length;
+    protected RailwayNetwork railwayNetwork;
+
     private final ArrayList<Train> trainsHosted = new ArrayList<>();
 
-    public ArrayList<Train> getTrainsHosted() {
-        return trainsHosted;
-    }
-
-    public RailwayPlace(double length) {
+    public RailwayPlace(double length, RailwayNetwork railwayNetwork) {
         this.length = length;
+        this.railwayNetwork = railwayNetwork;
     }
 
-    public RailwayPlace(String name, double length) {
+    public RailwayPlace(String name, double length, RailwayNetwork railwayNetwork) {
         this.name = name;
         this.length = length;
+        this.railwayNetwork = railwayNetwork;
     }
     public abstract double traversalDurationForTrainOfSpeed(double speed);
 
@@ -52,7 +52,7 @@ public abstract class RailwayPlace {
     }
 
     public boolean isLastPlaceOnNetwork(){
-        return RailwayNetwork.checkIfPlaceAtEndOfNetwork(this);
+        return railwayNetwork.checkIfPlaceAtEndOfNetwork(this);
     }
     public double traversalTimeInSeconds(Train train){
         return traversalDurationForTrainOfSpeed(train.getSpeed());
