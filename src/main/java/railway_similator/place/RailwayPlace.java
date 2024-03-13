@@ -13,9 +13,7 @@ public abstract class RailwayPlace {
     protected String name;
     protected double length;
     protected RailwayNetwork railwayNetwork;
-
     private final Lock lock = new ReentrantLock();
-
     private final Condition atCapacity = lock.newCondition();
 
     private final ArrayList<Train> trainsHosted = new ArrayList<>();
@@ -38,8 +36,7 @@ public abstract class RailwayPlace {
             try{
                 atCapacity.await();
             } catch (InterruptedException e) {
-                //TODO - Add logging
-                System.out.println(e.getMessage());
+                e.printStackTrace();
             }
         }
         try {

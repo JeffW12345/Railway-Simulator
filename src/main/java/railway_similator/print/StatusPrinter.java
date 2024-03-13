@@ -2,6 +2,8 @@ package railway_similator.print;
 
 import railway_similator.RailwayNetwork;
 
+import static java.lang.Thread.sleep;
+
 public class StatusPrinter implements Print {
     RailwayNetwork railwayNetwork;
     public StatusPrinter(RailwayNetwork railwayNetwork){
@@ -13,7 +15,7 @@ public class StatusPrinter implements Print {
         while (true) {
             System.out.println(railwayNetwork);
             try {
-                Thread.sleep(1000);
+                sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
