@@ -13,6 +13,8 @@ public abstract class RailwayPlace {
     protected double length;
     protected RailwayNetwork railwayNetwork;
 
+    private final Lock lock = new ReentrantLock();
+
     private final ArrayList<Train> trainsHosted = new ArrayList<>();
 
     public RailwayPlace(double length, RailwayNetwork railwayNetwork) {
@@ -28,26 +30,23 @@ public abstract class RailwayPlace {
     public abstract double traversalDurationForTrainOfSpeed(double speed);
 
     public void addTrain(Train train) {
-        Lock addTrainLock = new ReentrantLock();
         // final Condition cannotMoveTrain  = addTrainLock.newCondition();
-        addTrainLock.lock();
+        lock.lock();
         try {
             trainsHosted.add(train);
             }
             finally {
-                addTrainLock.unlock();
+            lock.unlock();
             }
     }
 
     public void removeTrain(Train train){
-        Lock removeTrainLock = new ReentrantLock();
-        if (removeTrainLock.tryLock()) {
-            try {
-                trainsHosted.remove(train);
-            }
-            finally {
-                removeTrainLock.unlock();
-            }
+        lock.lock();
+        try {
+            trainsHosted.remove(train);
+        }
+        finally {
+            lock.unlock();
         }
     }
 
@@ -76,10 +75,6 @@ public abstract class RailwayPlace {
     }
 
     private String getDashes(int numberOfDashes){
-        String dashes = "-";
-        for(int i = 0; i < numberOfDashes; i++){
-            dashes += dashes;
-        }
-        return dashes;
+        return "-" + "-".repeat(numberOfDashes);
     }
 }

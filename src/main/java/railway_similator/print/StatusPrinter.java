@@ -10,12 +10,15 @@ public class StatusPrinter implements Print {
     @Override
     @SuppressWarnings("InfiniteLoopStatement")
     public void printStatus() {
-        long printAgainOnOrAfter = System.currentTimeMillis();
-        while (true){
-            if (System.currentTimeMillis() >= printAgainOnOrAfter){
-                System.out.println(railwayNetwork);
-                printAgainOnOrAfter += (System.currentTimeMillis() + 15000);
+        while (true) {
+            System.out.println(railwayNetwork);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
     }
+
+
 }
