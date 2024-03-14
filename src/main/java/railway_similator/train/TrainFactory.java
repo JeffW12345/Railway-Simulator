@@ -12,10 +12,6 @@ public class TrainFactory {
         }
         return new ExpressTrain(++lastNumberAssigned, railwayNetwork);
     }
-    private static void createTrainAndActivateThread(TrainType type, RailwayNetwork railwayNetwork) {
-        Train train = createTrain(type, railwayNetwork);
-        train.getThread().start();
-    }
     @SuppressWarnings("InfiniteLoopStatement")
     public static void createTrainsAndActivate(RailwayNetwork railwayNetwork, int maximumIntervalBetweenLoops) {
         while(true){
@@ -25,7 +21,8 @@ public class TrainFactory {
                 e.printStackTrace();
             }
             TrainType trainType = new Random().nextInt(2) == 0 ? TrainType.EXPRESS : TrainType.LOCAL;
-            createTrainAndActivateThread(trainType, railwayNetwork);
+            Train train = createTrain(trainType, railwayNetwork);
+            train.getThread().start();
         }
     }
 }
