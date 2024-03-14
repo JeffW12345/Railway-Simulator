@@ -18,6 +18,10 @@ public class Train implements Runnable {
     public double getSpeed(){
         return speed;
     }
+
+    public boolean isCurrentRailwayPlace(RailwayPlace railwayPlace){
+        return railwayPlace == currentRailwayPlace;
+    }
     public void setTimeArrivedAtCurrentPlace() {
         this.timeArrivedAtCurrentPlace = System.currentTimeMillis();
     }
@@ -31,7 +35,7 @@ public class Train implements Runnable {
         return secondsElapsedAtCurrentPlace >= traversalTime;
     }
 
-    private void addTrainToInitialRailwayPlace() {
+    public void addTrainToInitialRailwayPlace() {
         while (!trainAddedToInitialRailwayPlace){
             if (railwayNetwork.getNextFreeRailwayPlace() != null) {
                 currentRailwayPlace = railwayNetwork.getNextFreeRailwayPlace();
