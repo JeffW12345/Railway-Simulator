@@ -33,6 +33,10 @@ public class RailwayNetwork {
         }
     }
 
+    public boolean containsRailwayPlace(RailwayPlace railwayPlace){
+        return railwayPlaces.contains(railwayPlace);
+    }
+
     public synchronized boolean checkIfPlaceAtEndOfNetwork(RailwayPlace railwayPlace) {
         return railwayPlaces.getLast() == railwayPlace;
     }
