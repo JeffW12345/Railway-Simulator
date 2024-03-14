@@ -10,6 +10,7 @@ import railway_similator.train.Train;
 import java.lang.reflect.Field;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 class TrackSegmentTest {
@@ -24,7 +25,7 @@ class TrackSegmentTest {
     void addTrain_WhenNotAtCapacity_ShouldAddTrain() {
         Train train = new Train(1, null);
         trackSegment.addTrain(train);
-        assertEquals(1, trackSegment.numberOfTrainsHosted());
+        assertTrue(trackSegment.numberOfTrainsEqualTo(1));
     }
     @Test
     void addTrain_WhenAtCapacity_ShouldNotAddTrain() throws InterruptedException, NoSuchFieldException, IllegalAccessException {
@@ -39,14 +40,14 @@ class TrackSegmentTest {
         thread.start();
         Thread.sleep(100);
 
-        assertEquals(0, trackSegment.numberOfTrainsHosted());
+        assertTrue(trackSegment.numberOfTrainsEqualTo(0));
     }
     @Test
     void removeTrain_ShouldRemoveTrain() {
         Train train = new Train(1, null);
         trackSegment.addTrain(train);
         trackSegment.removeTrain(train);
-        assertEquals(0, trackSegment.numberOfTrainsHosted());
+        assertTrue(trackSegment.numberOfTrainsEqualTo(0));
     }
 
     @Test

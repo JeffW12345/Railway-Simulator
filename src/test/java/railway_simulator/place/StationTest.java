@@ -2,17 +2,14 @@ package railway_simulator.place;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import railway_similator.RailwayNetwork;
 import railway_similator.place.RailwayPlace;
 import railway_similator.place.Station;
 import railway_similator.train.ExpressTrain;
 import railway_similator.train.Train;
 import java.lang.reflect.Field;
 
-import java.util.Random;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 class StationTest {
@@ -27,7 +24,7 @@ class StationTest {
     void addTrain_WhenNotAtCapacity_ShouldAddTrain() {
         Train train = new Train(1, null);
         station.addTrain(train);
-        assertEquals(1, station.numberOfTrainsHosted());
+        assertTrue(station.numberOfTrainsEqualTo(1));
     }
     @Test
     void addTrain_WhenAtCapacity_ShouldNotAddTrain() throws InterruptedException, NoSuchFieldException, IllegalAccessException {
@@ -42,14 +39,14 @@ class StationTest {
         thread.start();
         Thread.sleep(100);
 
-        assertEquals(0, station.numberOfTrainsHosted());
+        assertTrue(station.numberOfTrainsEqualTo(0));
     }
     @Test
     void removeTrain_ShouldRemoveTrain() {
         Train train = new Train(1, null);
         station.addTrain(train);
         station.removeTrain(train);
-        assertEquals(0, station.numberOfTrainsHosted());
+        assertTrue(station.numberOfTrainsEqualTo(0));
     }
 
     @Test

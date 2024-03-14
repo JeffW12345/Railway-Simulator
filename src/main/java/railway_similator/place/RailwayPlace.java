@@ -28,8 +28,8 @@ public abstract class RailwayPlace {
         this.railwayNetwork = railwayNetwork;
     }
 
-    public int numberOfTrainsHosted(){
-        return trainsHosted.size();
+    public boolean numberOfTrainsEqualTo(int numberOfTrains){
+        return trainsHosted.size() == numberOfTrains;
     }
     public abstract double traversalDurationForTrainOfSpeed(double speed);
 
