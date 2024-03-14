@@ -2,9 +2,12 @@ package railway_simulator.place;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import railway_similator.place.RailwayPlace;
 import railway_similator.place.TrackSegment;
 import railway_similator.train.ExpressTrain;
 import railway_similator.train.Train;
+
+import java.lang.reflect.Field;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -24,8 +27,10 @@ class TrackSegmentTest {
         assertEquals(1, trackSegment.numberOfTrainsHosted());
     }
     @Test
-    void addTrain_WhenAtCapacity_ShouldNotAddTrain() throws InterruptedException {
-        trackSegment.setCapacity(0);
+    void addTrain_WhenAtCapacity_ShouldNotAddTrain() throws InterruptedException, NoSuchFieldException, IllegalAccessException {
+        Field capacityField = RailwayPlace.class.getDeclaredField("capacity");
+        capacityField.setAccessible(true);
+        capacityField.set(trackSegment, 0);
 
         Thread thread = new Thread(() -> {
             Train train = new Train(1, null);

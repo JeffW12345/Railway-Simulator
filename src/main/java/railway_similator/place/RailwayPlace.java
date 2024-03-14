@@ -61,10 +61,6 @@ public abstract class RailwayPlace {
         }
     }
 
-    public void setCapacity(int capacity){
-        this.capacity = capacity;
-    }
-
     public boolean isLastPlaceOnNetwork(){
         return railwayNetwork.checkIfPlaceAtEndOfNetwork(this);
     }
