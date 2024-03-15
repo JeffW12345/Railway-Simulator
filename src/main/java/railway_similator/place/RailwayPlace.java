@@ -12,6 +12,7 @@ public abstract class RailwayPlace {
     protected int capacity;
     protected String name;
     protected double length;
+
     protected RailwayNetwork railwayNetwork;
     private final Lock lock = new ReentrantLock();
     private final Condition atCapacity = lock.newCondition();
@@ -45,7 +46,7 @@ public abstract class RailwayPlace {
         try {
             trainsHosted.add(train);
             }
-            finally {
+        finally {
             atCapacity.signal();
             lock.unlock();
         }
