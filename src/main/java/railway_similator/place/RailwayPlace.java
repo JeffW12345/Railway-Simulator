@@ -45,7 +45,7 @@ public abstract class RailwayPlace {
         }
         try {
             trainsHosted.add(train);
-            }
+        }
         finally {
             atCapacity.signal();
             lock.unlock();
