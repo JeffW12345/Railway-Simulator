@@ -72,7 +72,7 @@ public class RailwayNetwork {
         }
     }
 
-    private static void trainNewRailwayPlaceActions(
+    private void trainNewRailwayPlaceActions(
             Train train,
             RailwayPlace nextRailwayPlace,
             RailwayPlace currentRailwayPlace

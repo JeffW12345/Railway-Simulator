@@ -7,7 +7,6 @@ import railway_similator.train.TrainFactory;
 
 public class RunMe {
     public static void main(String[] args) {
-
         RailwayNetwork railwayNetwork = new RailwayNetwork();
         railwayNetwork.addRailwayPlace(new Station("Glasgow", 0.5, railwayNetwork));
         railwayNetwork.addRailwayPlace(new TrackSegment( 1, railwayNetwork));
