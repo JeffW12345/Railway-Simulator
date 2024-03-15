@@ -18,7 +18,7 @@ public class RunMe {
         railwayNetwork.addRailwayPlace(new Station("Motherwell", 0.5, railwayNetwork));
 
         new Thread(() -> new TrainFactory()
-                .createTrainsAndActivate(railwayNetwork, 15))
+                .createTrains(railwayNetwork, 15))
                 .start();
 
         new Thread(() -> new StatusPrinter(railwayNetwork)

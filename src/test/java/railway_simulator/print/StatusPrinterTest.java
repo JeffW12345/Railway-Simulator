@@ -39,7 +39,7 @@ public class StatusPrinterTest {
 
         Thread.sleep(1100);
 
-        String printedContent = outputStream.toString().trim();
+        String printedContent = outputStream.toString();
         assertTrue(printedContent.contains("Mock Railway Network Status"));
     }
 }
