@@ -8,7 +8,7 @@ public class TrackSegment extends RailwayPlace {
         name = "Track";
         capacity = 1;
     }
-    public double traversalDurationForTrainOfSpeed(double speed){
-        return (length / speed);
+    public double traversalDurationForTrainOfSpeed(double speedInMetersPerSecond){
+        return (length / speedInMetersPerSecond);
     }
 }

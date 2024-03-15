@@ -4,7 +4,7 @@ import railway_similator.RailwayNetwork;
 import railway_similator.place.RailwayPlace;
 
 public class Train implements Runnable {
-    protected double speed;
+    protected double speedInMetersPerSecond;
     protected final int trainNumber;
     protected long timeArrivedAtCurrentPlace;
     protected RailwayPlace currentRailwayPlace;
@@ -16,8 +16,8 @@ public class Train implements Runnable {
         this.railwayNetwork = railwayNetwork;
         new Thread(this).start();
     }
-    public double getSpeed(){
-        return speed;
+    public double getSpeedInMetersPerSecond(){
+        return speedInMetersPerSecond;
     }
 
     public boolean isCurrentRailwayPlace(RailwayPlace railwayPlace){

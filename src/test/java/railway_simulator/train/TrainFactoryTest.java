@@ -16,7 +16,7 @@ public class TrainFactoryTest {
 
         Thread thread = new Thread(() -> {
             RailwayNetwork railwayNetwork = mock(RailwayNetwork.class);
-            TrainFactory.createTrainsAndActivate(railwayNetwork, 0);
+            new TrainFactory().createTrainsAndActivate(railwayNetwork, 0);
         });
 
         thread.start();

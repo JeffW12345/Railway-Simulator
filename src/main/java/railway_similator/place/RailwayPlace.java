@@ -31,7 +31,7 @@ public abstract class RailwayPlace {
     public boolean numberOfTrainsEqualTo(int numberOfTrains){
         return trainsHosted.size() == numberOfTrains;
     }
-    public abstract double traversalDurationForTrainOfSpeed(double speed);
+    public abstract double traversalDurationForTrainOfSpeed(double speedInMetersPerSecond);
 
     public void addTrain(Train train) {
         lock.lock();
@@ -65,7 +65,7 @@ public abstract class RailwayPlace {
         return railwayNetwork.checkIfPlaceAtEndOfNetwork(this);
     }
     public double traversalTimeInSeconds(Train train){
-        return traversalDurationForTrainOfSpeed(train.getSpeed());
+        return traversalDurationForTrainOfSpeed(train.getSpeedInMetersPerSecond());
     }
     public boolean canAcceptNewTrain() {
         return trainsHosted.size() < capacity;

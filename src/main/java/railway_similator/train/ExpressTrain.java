@@ -5,6 +5,6 @@ import railway_similator.RailwayNetwork;
 public class ExpressTrain extends Train {
     public ExpressTrain(int trainNumber, RailwayNetwork railwayNetwork) {
         super(trainNumber, railwayNetwork);
-        speed = 500;
+        speedInMetersPerSecond = 500;
     }
 }

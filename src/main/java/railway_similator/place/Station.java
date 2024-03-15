@@ -9,7 +9,7 @@ public class Station extends RailwayPlace {
         super(name, length, railwayNetwork);
         capacity = new Random().nextInt(4) + 1;
     }
-    public double traversalDurationForTrainOfSpeed(double speed){
-        return 5 + (length / speed);
+    public double traversalDurationForTrainOfSpeed(double speedInMetersPerSecond){
+        return 5 + (length / speedInMetersPerSecond);
     }
 }
