@@ -57,6 +57,7 @@ public class Train implements Runnable {
     @Override
     public void run() {
         addTrainToInitialRailwayPlace();
+
         while (trainAddedToInitialRailwayPlace) {
             if(atEndOfCurrentPlace() && !currentRailwayPlace.isLastPlaceOnNetwork()){
                 try {
