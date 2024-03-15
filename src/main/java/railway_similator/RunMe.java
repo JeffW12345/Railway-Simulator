@@ -3,8 +3,7 @@ package railway_similator;
 import railway_similator.place.Station;
 import railway_similator.place.TrackSegment;
 import railway_similator.print.StatusPrinter;
-
-import static railway_similator.train.TrainFactory.createTrainsAndActivate;
+import railway_similator.train.TrainFactory;
 
 public class RunMe {
     public static void main(String[] args) {
@@ -18,8 +17,12 @@ public class RunMe {
         railwayNetwork.addRailwayPlace(new TrackSegment( 1.9, railwayNetwork));
         railwayNetwork.addRailwayPlace(new Station("Motherwell", 0.5, railwayNetwork));
 
-        new Thread(() -> createTrainsAndActivate(railwayNetwork, 15)).start();
+        new Thread(() -> new TrainFactory()
+                .createTrainsAndActivate(railwayNetwork, 15))
+                .start();
 
-        new Thread(() -> new StatusPrinter(railwayNetwork).printStatus()).start();
+        new Thread(() -> new StatusPrinter(railwayNetwork)
+                .printStatus())
+                .start();
     }
 }

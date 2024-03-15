@@ -8,7 +8,7 @@ public class TrainFactory {
     private static int lastNumberAssigned = 0;
 
     @SuppressWarnings("InfiniteLoopStatement")
-    public static void createTrainsAndActivate(RailwayNetwork railwayNetwork, int maximumIntervalBetweenLoopsInSeconds) {
+    public void createTrainsAndActivate(RailwayNetwork railwayNetwork, int maximumIntervalBetweenLoopsInSeconds) {
         boolean firstTrainAdded = false;
         while(true){
             long intervalBetweenTrainCreation = firstTrainAdded
