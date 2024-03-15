@@ -33,7 +33,10 @@ choose which type of train)
 given section. E.g. a train can only enter a segment / station when there is space. This must be
 enforced with Conditions, await and signal or signalAll
 
+When a train reaches the end of the line, and would in a position to progress further if there were a 
+track or station with available capacity for it to progress to, it is removed from the network.
+
 ![Alt Text](example%20screenshot.jpg)
 
-Your code should include a main (in a file Runme.java) that creates some sections (including at least 2
+The code should include a main (in a file Runme.java) that creates some sections (including at least 2
 each of stations and track segments), links them together and starts all of the necessary threads

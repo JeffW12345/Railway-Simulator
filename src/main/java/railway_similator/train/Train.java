@@ -14,6 +14,7 @@ public class Train implements Runnable {
     public Train(int trainNumber, RailwayNetwork railwayNetwork) {
         this.trainNumber = trainNumber;
         this.railwayNetwork = railwayNetwork;
+        new Thread(this).start();
     }
     public double getSpeed(){
         return speed;
@@ -25,9 +26,6 @@ public class Train implements Runnable {
     public void setTimeArrivedAtCurrentPlace() {
         this.timeArrivedAtCurrentPlace = System.currentTimeMillis();
     }
-    public Thread getThread(){
-        return new Thread(this);
-    }
     public boolean atEndOfCurrentPlace(){
         if(currentRailwayPlace == null) return false;
         double traversalTime = currentRailwayPlace.traversalTimeInSeconds(this);
@@ -37,8 +35,9 @@ public class Train implements Runnable {
 
     public void addTrainToInitialRailwayPlace() {
         while (!trainAddedToInitialRailwayPlace){
-            if (railwayNetwork.getNextFreeRailwayPlace() != null) {
-                currentRailwayPlace = railwayNetwork.getNextFreeRailwayPlace();
+            RailwayPlace nextFreeRailwayPlace = railwayNetwork.getNextFreeRailwayPlace();
+            if (nextFreeRailwayPlace != null) {
+                currentRailwayPlace = nextFreeRailwayPlace;
                 currentRailwayPlace.addTrain(this);
                 this.setTimeArrivedAtCurrentPlace();
                 trainAddedToInitialRailwayPlace = true;

@@ -6,23 +6,25 @@ import static java.lang.Thread.sleep;
 
 public class TrainFactory {
     private static int lastNumberAssigned = 0;
-    private static Train createTrain(TrainType type, RailwayNetwork railwayNetwork) {
-        if(type == TrainType.LOCAL){
-            return new LocalTrain(++lastNumberAssigned, railwayNetwork);
-        }
-        return new ExpressTrain(++lastNumberAssigned, railwayNetwork);
-    }
+
     @SuppressWarnings("InfiniteLoopStatement")
-    public static void createTrainsAndActivate(RailwayNetwork railwayNetwork, int maximumIntervalBetweenLoops) {
+    public static void createTrainsAndActivate(RailwayNetwork railwayNetwork, int maximumIntervalBetweenLoopsInSeconds) {
+        boolean firstTrainAdded = false;
         while(true){
+            long intervalBetweenTrainCreation = firstTrainAdded
+                    ? new Random().nextInt(maximumIntervalBetweenLoopsInSeconds + 1) * 1000L
+                    : 0;
             try {
-                sleep(new Random().nextInt(maximumIntervalBetweenLoops + 1) * 1000L);
+                sleep(intervalBetweenTrainCreation);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
             TrainType trainType = new Random().nextInt(2) == 0 ? TrainType.EXPRESS : TrainType.LOCAL;
-            Train train = createTrain(trainType, railwayNetwork);
-            train.getThread().start();
+            if(trainType == TrainType.LOCAL){
+               new LocalTrain(++lastNumberAssigned, railwayNetwork);
+            }
+            new ExpressTrain(++lastNumberAssigned, railwayNetwork);
+            firstTrainAdded = true;
         }
     }
 }
